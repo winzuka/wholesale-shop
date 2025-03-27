@@ -10,12 +10,11 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Order {
+public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private
-    Integer order_id;
+    private Integer order_id;
     private LocalDate order_date;
     private Double order_price;
 
@@ -24,11 +23,15 @@ public class Order {
     private
     Customer customer;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
     private List<OrderDetails> orderDetails;
 
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
-    Invoice invoice;
+    @OneToOne(mappedBy = "orders", cascade = CascadeType.ALL)
+    private Invoice invoice;
+
+    @OneToOne(mappedBy = "orders", cascade = CascadeType.ALL)
+    private
+    Product product;
 
     public Integer getOrder_id() {
         return order_id;
@@ -68,5 +71,21 @@ public class Order {
 
     public void setOrderDetails(List<OrderDetails> orderDetails) {
         this.orderDetails = orderDetails;
+    }
+
+    public Invoice getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }

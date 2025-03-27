@@ -21,8 +21,7 @@ public class Invoice {
 
     @OneToOne
     @JoinColumn(name = "order_id", nullable = false)
-    private
-    Order order;
+    private Orders orders;
 
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
     private List<Payment> payments;
@@ -51,12 +50,12 @@ public class Invoice {
         this.invoice_amount = invoice_amount;
     }
 
-    public Order getOrder() {
-        return order;
+    public Orders getOrders() {
+        return orders;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setOrders(Orders orders) {
+        this.orders = orders;
     }
 
     public List<Payment> getPayments() {

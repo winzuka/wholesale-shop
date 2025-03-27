@@ -11,8 +11,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private
-    Integer product_id;
+    private Integer product_id;
     private String product_name;
     private Double product_price;
     private Integer stock_quantity;
@@ -20,6 +19,10 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "supplier_id", nullable = false)
     private Supplier supplier;
+
+    @OneToOne
+    @JoinColumn(name ="order_id", nullable = false)
+    private Orders orders;
 
     public Integer getProduct_id() {
         return product_id;
@@ -59,5 +62,13 @@ public class Product {
 
     public void setSupplier(Supplier supplier) {
         this.supplier = supplier;
+    }
+
+    public Orders getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Orders orders) {
+        this.orders = orders;
     }
 }
