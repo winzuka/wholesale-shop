@@ -62,4 +62,12 @@ public class Customer {
     public void setCustomer_phone(String customer_phone) {
         this.customer_phone = customer_phone;
     }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
 }

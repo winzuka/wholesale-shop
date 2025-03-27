@@ -27,6 +27,9 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderDetails> orderDetails;
 
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    Invoice invoice;
+
     public Integer getOrder_id() {
         return order_id;
     }
@@ -57,5 +60,13 @@ public class Order {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public List<OrderDetails> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(List<OrderDetails> orderDetails) {
+        this.orderDetails = orderDetails;
     }
 }
