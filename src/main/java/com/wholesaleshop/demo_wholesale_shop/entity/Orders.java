@@ -20,8 +20,7 @@ public class Orders {
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
-    private
-    Customer customer;
+    private Customer customer;
 
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
     private List<OrderDetails> orderDetails;
@@ -30,8 +29,7 @@ public class Orders {
     private Invoice invoice;
 
     @OneToOne(mappedBy = "orders", cascade = CascadeType.ALL)
-    private
-    Product product;
+    private Payment payment;
 
     public Integer getOrder_id() {
         return order_id;
@@ -81,11 +79,11 @@ public class Orders {
         this.invoice = invoice;
     }
 
-    public Product getProduct() {
-        return product;
+    public Payment getPayment() {
+        return payment;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 }

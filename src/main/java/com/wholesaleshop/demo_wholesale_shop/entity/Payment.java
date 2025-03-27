@@ -21,8 +21,7 @@ public class Payment {
 
     @OneToOne
     @JoinColumn(name = "order_id", nullable = false)
-    private
-    Orders orders;
+    private Orders orders;
 
     @ManyToOne
     @JoinColumn(name = "invoice_id", nullable = false)

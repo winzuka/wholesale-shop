@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,9 +22,8 @@ public class Product {
     @JoinColumn(name = "supplier_id", nullable = false)
     private Supplier supplier;
 
-    @OneToOne
-    @JoinColumn(name ="order_id", nullable = false)
-    private Orders orders;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<OrderDetails> orderDetails;
 
     public Integer getProduct_id() {
         return product_id;
@@ -64,11 +65,12 @@ public class Product {
         this.supplier = supplier;
     }
 
-    public Orders getOrders() {
-        return orders;
+
+    public List<OrderDetails> getOrderDetails() {
+        return orderDetails;
     }
 
-    public void setOrders(Orders orders) {
-        this.orders = orders;
+    public void setOrderDetails(List<OrderDetails> orderDetails) {
+        this.orderDetails = orderDetails;
     }
 }
