@@ -1,9 +1,10 @@
 package com.wholesaleshop.demo_wholesale_shop.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -11,12 +12,16 @@ import lombok.NoArgsConstructor;
 public class Customer {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private
     Integer customer_id;
     private String customer_name;
     private String customer_address;
     private String customer_email;
     private String customer_phone;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<Order> orders;
 
     public Integer getCustomer_id() {
         return customer_id;
