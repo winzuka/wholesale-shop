@@ -1,6 +1,8 @@
 package com.wholesaleshop.demo_wholesale_shop.repo;
 
 import com.wholesaleshop.demo_wholesale_shop.entity.Customer;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,4 +19,6 @@ public interface CustomerRepo extends JpaRepository<Customer, Integer> {
             "customer_phone LIKE %:query%",
             nativeQuery = true)
     List<Customer> searchCustomers(@Param("query") String query);
+
+    Page<Customer> findAll(Pageable pageable);
 }

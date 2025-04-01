@@ -6,6 +6,8 @@ import com.wholesaleshop.demo_wholesale_shop.repo.CustomerRepo;
 import com.wholesaleshop.demo_wholesale_shop.service.CustomerService;
 import com.wholesaleshop.demo_wholesale_shop.utils.CustomerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -70,10 +72,11 @@ public class CustomerServiceImpl implements CustomerService {
 //        return null; // Return null if customer is not found. Handle this better in the controller.
 //    }
 
-    public List<CustomerDto> getAllCustomers() {
-        List<Customer> allCustomers = customerRepo.findAll();
-        return allCustomers.stream().map(customerMapper::customerToCustomerDto).collect(Collectors.toList());
+    public Page<CustomerDto> getAllCustomers(Pageable pageable) {
+        Page<Customer> customerPage = customerRepo.findAll(pageable);
+        return customerPage.map(customerMapper::customerToCustomerDto);
     }
+
 
     public List<CustomerDto> searchCustomers(String query) {
         List<Customer> customers = customerRepo.searchCustomers(query);

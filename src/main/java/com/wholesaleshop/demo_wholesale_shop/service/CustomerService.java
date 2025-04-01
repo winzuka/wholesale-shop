@@ -2,6 +2,8 @@ package com.wholesaleshop.demo_wholesale_shop.service;
 
 
 import com.wholesaleshop.demo_wholesale_shop.dto.CustomerDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,6 +15,6 @@ public interface CustomerService {
     CustomerDto updateCustomer(CustomerDto customerDto);
     CustomerDto deleteCustomer(Integer customerId);
 //    CustomerDto searchCustomer(Integer customerId);
-    List<CustomerDto> getAllCustomers();
+    Page<CustomerDto> getAllCustomers(Pageable pageable);
     List<CustomerDto> searchCustomers(String query);
 }

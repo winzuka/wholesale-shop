@@ -3,6 +3,9 @@ package com.wholesaleshop.demo_wholesale_shop.controller;
 import com.wholesaleshop.demo_wholesale_shop.dto.CustomerDto;
 import com.wholesaleshop.demo_wholesale_shop.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,13 +59,11 @@ public class CustomerController {
 //    }
 
     @GetMapping
-    public ResponseEntity<List<CustomerDto>> getAllCustomers() {
-
-        List<CustomerDto> customers = customerService.getAllCustomers();
-
-        if (customers.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Page<CustomerDto>> getAllCustomers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<CustomerDto> customers = customerService.getAllCustomers(pageable);
         return ResponseEntity.ok(customers);
     }
 
