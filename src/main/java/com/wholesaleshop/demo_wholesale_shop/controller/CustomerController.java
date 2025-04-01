@@ -1,11 +1,12 @@
 package com.wholesaleshop.demo_wholesale_shop.controller;
 
 import com.wholesaleshop.demo_wholesale_shop.dto.CustomerDto;
-import com.wholesaleshop.demo_wholesale_shop.entity.Customer;
 import com.wholesaleshop.demo_wholesale_shop.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/customer")
@@ -52,5 +53,16 @@ public class CustomerController {
         }else{
             return ResponseEntity.ok(customer);
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<CustomerDto>> getAllCustomers() {
+
+        List<CustomerDto> customers = customerService.getAllCustomers();
+
+        if (customers.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(customers);
     }
 }

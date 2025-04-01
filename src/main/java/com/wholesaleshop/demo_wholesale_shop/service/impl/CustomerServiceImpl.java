@@ -8,7 +8,9 @@ import com.wholesaleshop.demo_wholesale_shop.utils.CustomerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -66,6 +68,11 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
         return null; // Return null if customer is not found. Handle this better in the controller.
+    }
+
+    public List<CustomerDto> getAllCustomers() {
+        List<Customer> allCustomers = customerRepo.findAll();
+        return allCustomers.stream().map(customerMapper::customerToCustomerDto).collect(Collectors.toList());
     }
 
 }
