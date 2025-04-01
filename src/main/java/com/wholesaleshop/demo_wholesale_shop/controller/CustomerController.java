@@ -44,16 +44,16 @@ public class CustomerController {
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CustomerDto> getCustomer(@PathVariable Integer id) {
-        CustomerDto customer = customerService.searchCustomer(id);
-
-        if(customer == null) {
-            return ResponseEntity.notFound().build();
-        }else{
-            return ResponseEntity.ok(customer);
-        }
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<CustomerDto> getCustomer(@PathVariable Integer id) {
+//        CustomerDto customer = customerService.searchCustomer(id);
+//
+//        if(customer == null) {
+//            return ResponseEntity.notFound().build();
+//        }else{
+//            return ResponseEntity.ok(customer);
+//        }
+//    }
 
     @GetMapping
     public ResponseEntity<List<CustomerDto>> getAllCustomers() {
@@ -62,6 +62,16 @@ public class CustomerController {
 
         if (customers.isEmpty()) {
             return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(customers);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<CustomerDto>> searchCustomers(@RequestParam String query) {
+        List<CustomerDto> customers = customerService.searchCustomers(query);
+
+        if (customers.isEmpty()) {
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(customers);
     }

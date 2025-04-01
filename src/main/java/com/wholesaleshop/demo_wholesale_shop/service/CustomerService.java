@@ -12,6 +12,7 @@ public interface CustomerService {
     CustomerDto saveCustomer(CustomerDto customerDto);
     CustomerDto updateCustomer(CustomerDto customerDto);
     CustomerDto deleteCustomer(Integer customerId);
-    CustomerDto searchCustomer(Integer customerId);
+//    CustomerDto searchCustomer(Integer customerId);
     List<CustomerDto> getAllCustomers();
+    List<CustomerDto> searchCustomers(String query);
 }

@@ -58,21 +58,28 @@ public class CustomerServiceImpl implements CustomerService {
         return null; // Handle error case properly in the controller
     }
 
-    @Override
-    public CustomerDto searchCustomer(Integer customer_id) {
-        Optional<Customer> customerOpt = customerRepo.findById(customer_id);
-
-        if (customerOpt.isPresent()) {
-            // If customer is found, convert entity to DTO
-            return customerMapper.customerToCustomerDto(customerOpt.get());
-        }
-
-        return null; // Return null if customer is not found. Handle this better in the controller.
-    }
+//    @Override
+//    public CustomerDto searchCustomer(Integer customer_id) {
+//        Optional<Customer> customerOpt = customerRepo.findById(customer_id);
+//
+//        if (customerOpt.isPresent()) {
+//            // If customer is found, convert entity to DTO
+//            return customerMapper.customerToCustomerDto(customerOpt.get());
+//        }
+//
+//        return null; // Return null if customer is not found. Handle this better in the controller.
+//    }
 
     public List<CustomerDto> getAllCustomers() {
         List<Customer> allCustomers = customerRepo.findAll();
         return allCustomers.stream().map(customerMapper::customerToCustomerDto).collect(Collectors.toList());
+    }
+
+    public List<CustomerDto> searchCustomers(String query) {
+        List<Customer> customers = customerRepo.searchCustomers(query);
+        return customers.stream()
+                .map(customerMapper::customerToCustomerDto)
+                .collect(Collectors.toList());
     }
 
 }
