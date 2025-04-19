@@ -14,7 +14,6 @@ public interface CustomerService {
     CustomerDto saveCustomer(CustomerDto customerDto);
     CustomerDto updateCustomer(CustomerDto customerDto);
     CustomerDto deleteCustomer(Integer customerId);
-//    CustomerDto searchCustomer(Integer customerId);
     Page<CustomerDto> getAllCustomers(Pageable pageable);
     List<CustomerDto> searchCustomers(String query);
 }

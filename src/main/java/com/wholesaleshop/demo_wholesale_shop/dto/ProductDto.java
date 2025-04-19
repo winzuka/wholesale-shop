@@ -8,13 +8,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomerDto {
-
+public class ProductDto {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    Integer customer_id;
+    Integer product_id;
 
-    String customer_name;
-    String customer_address;
-    String customer_email;
-    String customer_phone;
+    String product_name;
+    Double product_price;
+    Integer stock_quantity;
+
+    Integer supplier_id;
 }

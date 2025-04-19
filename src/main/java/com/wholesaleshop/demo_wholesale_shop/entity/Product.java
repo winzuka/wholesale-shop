@@ -13,7 +13,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer product_id;
+    private Integer productId;
     private String product_name;
     private Double product_price;
     private Integer stock_quantity;
@@ -22,15 +22,15 @@ public class Product {
     @JoinColumn(name = "supplier_id", nullable = false)
     private Supplier supplier;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderDetails> orderDetails;
 
-    public Integer getProduct_id() {
-        return product_id;
+    public Integer getProductId() {
+        return productId;
     }
 
-    public void setProduct_id(Integer product_id) {
-        this.product_id = product_id;
+    public void setProductId(Integer product_id) {
+        this.productId = product_id;
     }
 
     public String getProduct_name() {

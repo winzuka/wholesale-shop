@@ -14,8 +14,8 @@ public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer order_id;
-    private LocalDate order_date;
+    private Integer orderId;
+    private LocalDate orderDate;
     private Double order_price;
 
     @ManyToOne
@@ -31,20 +31,20 @@ public class Orders {
     @OneToOne(mappedBy = "orders", cascade = CascadeType.ALL)
     private Payment payment;
 
-    public Integer getOrder_id() {
-        return order_id;
+    public Integer getOrderId() {
+        return orderId;
     }
 
-    public void setOrder_id(Integer order_id) {
-        this.order_id = order_id;
+    public void setOrderId(Integer order_id) {
+        this.orderId = order_id;
     }
 
-    public LocalDate getOrder_date() {
-        return order_date;
+    public LocalDate getOrderDate() {
+        return orderDate;
     }
 
-    public void setOrder_date(LocalDate order_date) {
-        this.order_date = order_date;
+    public void setOrderDate(LocalDate orderDate) {
+        this.orderDate = orderDate;
     }
 
     public Double getOrder_price() {

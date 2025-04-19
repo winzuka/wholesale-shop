@@ -11,8 +11,7 @@ public class OrderDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private
-    Integer orderDetailsId;
+    private Integer orderDetailsId;
     private Integer quantity;
     private Double subtotal;
 
