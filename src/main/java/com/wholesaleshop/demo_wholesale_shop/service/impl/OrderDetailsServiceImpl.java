@@ -105,7 +105,6 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
                 .orElseThrow(() -> new RuntimeException("OrderDetails not found with id: " + id));
 
         existing.setQuantity(dto.getQuantity());
-//        existing.setSubtotal(dto.getSubtotal());
 
         Product p1 = existing.getProduct();
         double unitPrice = p1.getProduct_price();
@@ -125,7 +124,6 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
         p1.setStock_quantity(currentStock - difference);
         productRepo.save(p1);
 
-        // Update order and product if needed
         if (!existing.getOrders().getOrderId().equals(dto.getOrderId())) {
             Orders orders = orderRepo.findById(dto.getOrderId())
                     .orElseThrow(() -> new RuntimeException("Order not found with id: " + dto.getOrderId()));

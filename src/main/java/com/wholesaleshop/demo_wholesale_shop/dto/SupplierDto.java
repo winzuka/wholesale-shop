@@ -15,7 +15,6 @@ public class SupplierDto {
     private String supplier_name;
     private String supplier_address;
     private String supplier_phone;
-//    private Integer order_id;
 
     public Integer getSupplier_id() {
         return supplier_id;

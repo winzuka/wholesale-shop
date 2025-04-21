@@ -1,6 +1,5 @@
 package com.wholesaleshop.demo_wholesale_shop.repo;
 
-import com.wholesaleshop.demo_wholesale_shop.entity.Customer;
 import com.wholesaleshop.demo_wholesale_shop.entity.OrderDetails;
 import com.wholesaleshop.demo_wholesale_shop.entity.Orders;
 import org.springframework.data.domain.Page;

@@ -60,7 +60,7 @@ public class ProductServiceImpl implements ProductService {
             return productMapper.productToProductDto(updatedProduct);
         }
 
-        return null; // Handle error case properly in the controller
+        return null;
     }
 
     @Override
@@ -72,7 +72,7 @@ public class ProductServiceImpl implements ProductService {
             return productMapper.productToProductDto(productOpt.get());
         }
 
-        return null; // Handle error case properly in the controller
+        return null;
     }
 
     @Override

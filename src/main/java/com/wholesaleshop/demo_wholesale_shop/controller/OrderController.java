@@ -18,13 +18,11 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    // Save new Order
     @PostMapping
     public OrderDto saveOrder(@RequestBody OrderDto orderDto) {
         return orderService.saveOrder(orderDto);
     }
 
-    // Update Order
     @PutMapping("/{id}")
     public ResponseEntity<OrderDto> updateOrder(@PathVariable Integer id, @RequestBody OrderDto orderDto) {
         orderDto.setOrderId(id);
@@ -37,13 +35,11 @@ public class OrderController {
         }
     }
 
-    // Delete Order
     @DeleteMapping("/{orderId}")
     public OrderDto deleteOrder(@PathVariable Integer orderId) {
         return orderService.deleteOrder(orderId);
     }
 
-    // Get all orders with pagination
     @GetMapping
     public ResponseEntity<Page<OrderDto>> getAllOrders(
             @RequestParam(defaultValue = "0") int page,

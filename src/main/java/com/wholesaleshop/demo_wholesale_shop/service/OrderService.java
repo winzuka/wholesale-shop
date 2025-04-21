@@ -11,12 +11,8 @@ import java.util.List;
 public interface OrderService {
 
     OrderDto saveOrder(OrderDto orderDto);
-
     OrderDto updateOrder(OrderDto orderDto);
-
     OrderDto deleteOrder(Integer orderId);
-
     List<OrderDto> searchOrders(String query);
-
     Page<OrderDto> getAllOrders(Pageable pageable);
 }

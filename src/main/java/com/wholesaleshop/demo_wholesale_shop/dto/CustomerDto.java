@@ -11,10 +11,11 @@ import lombok.NoArgsConstructor;
 public class CustomerDto {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private
     Integer customer_id;
 
-    String customer_name;
-    String customer_address;
-    String customer_email;
-    String customer_phone;
+    private String customer_name;
+    private String customer_address;
+    private String customer_email;
+    private String customer_phone;
 }

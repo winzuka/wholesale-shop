@@ -47,7 +47,7 @@ public class SupplierServiceImpl implements SupplierService {
             return supplierMapper.supplierToSupplierDto(updatedSupplier);
         }
 
-        return null; // Handle error case properly in the controller
+        return null;
     }
 
 

@@ -1,6 +1,5 @@
 package com.wholesaleshop.demo_wholesale_shop.repo;
 
-import com.wholesaleshop.demo_wholesale_shop.entity.Product;
 import com.wholesaleshop.demo_wholesale_shop.entity.Supplier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

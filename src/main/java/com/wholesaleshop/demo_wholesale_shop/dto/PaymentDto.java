@@ -1,30 +1,19 @@
-package com.wholesaleshop.demo_wholesale_shop.entity;
+package com.wholesaleshop.demo_wholesale_shop.dto;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
 
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
-public class Payment {
+public class PaymentDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer payment_id;
+
     private String payment_method;
     private LocalDate payment_date;
     private Double paid_amount;
-
-    @OneToOne
-    @JoinColumn(name = "order_id", nullable = false)
-    private Orders orders;
-
-    @OneToOne
-    @JoinColumn(name = "invoice_id", nullable = false)
-    private Invoice invoice;
+    private Integer orderId;
+    private Integer invoiceId;
 
     public Integer getPayment_id() {
         return payment_id;
@@ -58,19 +47,19 @@ public class Payment {
         this.paid_amount = paid_amount;
     }
 
-    public Orders getOrders() {
-        return orders;
+    public Integer getOrderId() {
+        return orderId;
     }
 
-    public void setOrders(Orders orders) {
-        this.orders = orders;
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
     }
 
-    public Invoice getInvoice() {
-        return invoice;
+    public Integer getInvoiceId() {
+        return invoiceId;
     }
 
-    public void setInvoice(Invoice invoice) {
-        this.invoice = invoice;
+    public void setInvoiceId(Integer invoiceId) {
+        this.invoiceId = invoiceId;
     }
 }

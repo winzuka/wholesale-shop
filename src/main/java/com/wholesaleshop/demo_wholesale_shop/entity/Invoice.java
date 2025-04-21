@@ -14,8 +14,7 @@ public class Invoice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private
-    Integer invoice_id;
+    private Integer invoice_id;
     private LocalDate invoice_date;
     private Double invoice_amount;
 
@@ -23,8 +22,8 @@ public class Invoice {
     @JoinColumn(name = "order_id", nullable = false)
     private Orders orders;
 
-    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
-    private List<Payment> payments;
+    @OneToOne(mappedBy = "invoice", cascade = CascadeType.ALL)
+    private Payment payments;
 
     public Integer getInvoice_id() {
         return invoice_id;
@@ -58,11 +57,11 @@ public class Invoice {
         this.orders = orders;
     }
 
-    public List<Payment> getPayments() {
+    public Payment getPayments() {
         return payments;
     }
 
-    public void setPayments(List<Payment> payments) {
+    public void setPayments(Payment payments) {
         this.payments = payments;
     }
 }

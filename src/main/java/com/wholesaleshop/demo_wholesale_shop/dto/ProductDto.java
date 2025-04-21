@@ -15,6 +15,5 @@ public class ProductDto {
     String product_name;
     Double product_price;
     Integer stock_quantity;
-
     Integer supplier_id;
 }

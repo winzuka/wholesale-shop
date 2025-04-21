@@ -13,8 +13,7 @@ public class Supplier {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private
-    Integer supplier_id;
+    private Integer supplier_id;
     private String supplier_name;
     private String supplier_address;
     private String supplier_phone;

@@ -47,17 +47,6 @@ public class CustomerController {
         }
     }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<CustomerDto> getCustomer(@PathVariable Integer id) {
-//        CustomerDto customer = customerService.searchCustomer(id);
-//
-//        if(customer == null) {
-//            return ResponseEntity.notFound().build();
-//        }else{
-//            return ResponseEntity.ok(customer);
-//        }
-//    }
-
     @GetMapping
     public ResponseEntity<Page<CustomerDto>> getAllCustomers(
             @RequestParam(defaultValue = "0") int page,

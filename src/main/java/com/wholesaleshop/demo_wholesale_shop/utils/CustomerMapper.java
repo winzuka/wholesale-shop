@@ -8,10 +8,8 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface CustomerMapper {
 
-    // Entity to DTO Mapping
     CustomerDto customerToCustomerDto(Customer customer);
 
-    // DTO to Entity Mapping (Ignoring Orders)
     @Mapping(target = "orders", ignore = true)
     Customer customerDtoToCustomer(CustomerDto customerDto);
 

@@ -34,7 +34,6 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto saveOrder(OrderDto orderDto) {
         Orders orders = orderMapper.orderDtoToOrder(orderDto);
 
-        // Set Customer using customer_id from DTO
         Optional<Customer> customerOpt = customerRepo.findById(orderDto.getCustomer_id());
         customerOpt.ifPresent(orders::setCustomer);
 
@@ -50,14 +49,13 @@ public class OrderServiceImpl implements OrderService {
             existing.setOrderDate(orderDto.getOrderDate());
             existing.setOrder_price(orderDto.getOrder_price());
 
-            // Optionally update the customer too
             Optional<Customer> customerOpt = customerRepo.findById(orderDto.getCustomer_id());
             customerOpt.ifPresent(existing::setCustomer);
 
             Orders updated = orderRepo.save(existing);
             return orderMapper.orderToOrderDto(updated);
         }
-        return null; // handle not-found case in controller
+        return null;
     }
 
     @Override
@@ -68,7 +66,7 @@ public class OrderServiceImpl implements OrderService {
             orderRepo.deleteById(orderId);
             return orderMapper.orderToOrderDto(entity);
         }
-        return null; // handle not-found case in controller
+        return null;
     }
 
     @Override

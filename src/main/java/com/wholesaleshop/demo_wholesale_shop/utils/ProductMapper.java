@@ -7,10 +7,9 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
-    // Entity to DTO Mapping
+
     ProductDto productToProductDto(Product product);
 
-    // DTO to Entity Mapping
-    @Mapping(target = "supplier", ignore = true)  // We ignore the Supplier entity, since we only deal with supplier_id
+    @Mapping(target = "supplier", ignore = true)
     Product productDtoToProduct(ProductDto productDto);
 }

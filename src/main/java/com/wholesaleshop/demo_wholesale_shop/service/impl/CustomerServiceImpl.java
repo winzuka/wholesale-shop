@@ -47,7 +47,7 @@ public class CustomerServiceImpl implements CustomerService {
             return customerMapper.customerToCustomerDto(updatedCustomer);
         }
 
-        return null; // Handle error case properly in the controller
+        return null;
     }
 
     @Override
@@ -59,26 +59,13 @@ public class CustomerServiceImpl implements CustomerService {
             return customerMapper.customerToCustomerDto(customerOpt.get());
         }
 
-        return null; // Handle error case properly in the controller
+        return null;
     }
-
-//    @Override
-//    public CustomerDto searchCustomer(Integer customer_id) {
-//        Optional<Customer> customerOpt = customerRepo.findById(customer_id);
-//
-//        if (customerOpt.isPresent()) {
-//            // If customer is found, convert entity to DTO
-//            return customerMapper.customerToCustomerDto(customerOpt.get());
-//        }
-//
-//        return null; // Return null if customer is not found. Handle this better in the controller.
-//    }
 
     public Page<CustomerDto> getAllCustomers(Pageable pageable) {
         Page<Customer> customerPage = customerRepo.findAll(pageable);
         return customerPage.map(customerMapper::customerToCustomerDto);
     }
-
 
     public List<CustomerDto> searchCustomers(String query) {
         List<Customer> customers = customerRepo.searchCustomers(query);
