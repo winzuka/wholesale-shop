@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * REST controller for handling invoice-related operations.
+ * Base URL: /api/v1/invoice
+ */
 @RestController
 @RequestMapping("/api/v1/invoice")
 public class InvoiceController {
@@ -25,6 +29,14 @@ public class InvoiceController {
     @Autowired
     OrderRepo orderRepo;
 
+    /**
+     * Create a new invoice.
+     *
+     * Sets the invoice amount based on the associated order's price.
+     *
+     * @param invoiceDto DTO containing invoice details.
+     * @return ResponseEntity with the saved invoice or 400 if order not found.
+     */
     @PostMapping
     public ResponseEntity<InvoiceDto> saveInvoice(@RequestBody InvoiceDto invoiceDto) {
 
@@ -40,6 +52,13 @@ public class InvoiceController {
         return ResponseEntity.ok(savedInvoice);
     }
 
+    /**
+     * Update an existing invoice by ID.
+     *
+     * @param invoiceDto Updated invoice details.
+     * @param id         ID of the invoice to update.
+     * @return ResponseEntity with updated invoice or 404 if not found.
+     */
     @PutMapping("/{id}")
     public ResponseEntity<InvoiceDto> updateInvoice(@RequestBody InvoiceDto invoiceDto, @PathVariable Integer id) {
         invoiceDto.setInvoice_id(id);
@@ -52,6 +71,12 @@ public class InvoiceController {
         }
     }
 
+    /**
+     * Delete an invoice by ID.
+     *
+     * @param id ID of the invoice to delete.
+     * @return ResponseEntity with deleted invoice or 404 if not found.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<InvoiceDto> deleteInvoice(@PathVariable Integer id) {
         InvoiceDto deletedInvoice = invoiceService.deleteInvoice(id);
@@ -63,6 +88,13 @@ public class InvoiceController {
         }
     }
 
+    /**
+     * Get a paginated list of all invoices.
+     *
+     * @param page Page number (default is 0).
+     * @param size Page size (default is 5).
+     * @return Paginated list of invoices.
+     */
     @GetMapping
     public ResponseEntity<Page<InvoiceDto>> getAllInvoices(
             @RequestParam(defaultValue = "0") int page,
@@ -72,6 +104,12 @@ public class InvoiceController {
         return ResponseEntity.ok(invoices);
     }
 
+    /**
+     * Search for invoices by query.
+     *
+     * @param query Keyword to search invoices.
+     * @return List of matching invoices or 204 if no results found.
+     */
     @GetMapping("/search")
     public ResponseEntity<List<InvoiceDto>> searchInvoices(@RequestParam String query) {
         List<InvoiceDto> invoices = invoiceService.searchInvoices(query);

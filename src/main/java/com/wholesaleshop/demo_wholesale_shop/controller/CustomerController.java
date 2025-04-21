@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * REST controller for managing customer-related operations.
+ * Base URL: /api/v1/customer
+ */
 @RestController
 @RequestMapping("/api/v1/customer")
 public class CustomerController {
@@ -18,11 +22,26 @@ public class CustomerController {
     @Autowired
     CustomerService customerService;
 
+    /**
+     * Create a new customer.
+     *
+     * @param customerDto DTO containing customer details.
+     * @return ResponseEntity with the saved customer.
+     */
+
     @PostMapping
     public ResponseEntity<CustomerDto> saveCustomer(@RequestBody CustomerDto customerDto) {
         CustomerDto savedCustomer = customerService.saveCustomer(customerDto);
         return ResponseEntity.ok(savedCustomer);
     }
+
+    /**
+     * Update an existing customer.
+     *
+     * @param customerDto DTO with updated customer details.
+     * @param id          ID of the customer to update.
+     * @return ResponseEntity with the updated customer, or 404 if not found.
+     */
 
     @PutMapping("/{id}")
     public ResponseEntity<CustomerDto> updateCustomer(@RequestBody CustomerDto customerDto, @PathVariable Integer id) {
@@ -36,6 +55,12 @@ public class CustomerController {
         }
     }
 
+    /**
+     * Delete a customer by ID.
+     *
+     * @param id ID of the customer to delete.
+     * @return ResponseEntity with the deleted customer, or 404 if not found.
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<CustomerDto> deleteCustomer(@PathVariable Integer id) {
         CustomerDto deletedCustomer = customerService.deleteCustomer(id);
@@ -47,6 +72,13 @@ public class CustomerController {
         }
     }
 
+    /**
+     * Get a paginated list of all customers.
+     *
+     * @param page Page number (default is 0).
+     * @param size Number of customers per page (default is 5).
+     * @return Paginated list of customers.
+     */
     @GetMapping
     public ResponseEntity<Page<CustomerDto>> getAllCustomers(
             @RequestParam(defaultValue = "0") int page,
@@ -56,6 +88,12 @@ public class CustomerController {
         return ResponseEntity.ok(customers);
     }
 
+    /**
+     * Search for customers by a given query.
+     *
+     * @param query Search keyword.
+     * @return List of matching customers or 204 No Content if none found.
+     */
     @GetMapping("/search")
     public ResponseEntity<List<CustomerDto>> searchCustomers(@RequestParam String query) {
         List<CustomerDto> customers = customerService.searchCustomers(query);

@@ -22,62 +22,116 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
-    private OrderRepo orderRepo;
+    private OrderRepo orderRepo; // Repository for interacting with Orders data
 
     @Autowired
-    private CustomerRepo customerRepo;
+    private CustomerRepo customerRepo; // Repository for interacting with Customer data
 
     @Autowired
-    private OrderMapper orderMapper;
+    private OrderMapper orderMapper; // Mapper to convert between OrderDto and Orders entity
 
+    /**
+     * Save a new order.
+     * - Maps the OrderDto to an Order entity.
+     * - Associates the order with the specified customer.
+     *
+     * @param orderDto the OrderDto to save
+     * @return the saved OrderDto
+     */
     @Override
     public OrderDto saveOrder(OrderDto orderDto) {
+        // Map the OrderDto to the Orders entity
         Orders orders = orderMapper.orderDtoToOrder(orderDto);
 
+        // Fetch the customer by ID and associate with the order
         Optional<Customer> customerOpt = customerRepo.findById(orderDto.getCustomer_id());
         customerOpt.ifPresent(orders::setCustomer);
 
+        // Save the order and return the saved OrderDto
         Orders saved = orderRepo.save(orders);
         return orderMapper.orderToOrderDto(saved);
     }
 
+    /**
+     * Update an existing order.
+     * - Updates order details based on the provided OrderDto.
+     * - Associates the updated order with the specified customer.
+     *
+     * @param orderDto the OrderDto with updated data
+     * @return the updated OrderDto, or null if the order was not found
+     */
     @Override
     public OrderDto updateOrder(OrderDto orderDto) {
+        // Fetch the existing order by ID
         Optional<Orders> existingOpt = orderRepo.findById(orderDto.getOrderId());
         if (existingOpt.isPresent()) {
             Orders existing = existingOpt.get();
+
+            // Update order properties
             existing.setOrderDate(orderDto.getOrderDate());
             existing.setOrder_price(orderDto.getOrder_price());
 
+            // Fetch the customer by ID and associate with the order
             Optional<Customer> customerOpt = customerRepo.findById(orderDto.getCustomer_id());
             customerOpt.ifPresent(existing::setCustomer);
 
+            // Save the updated order and return the updated OrderDto
             Orders updated = orderRepo.save(existing);
             return orderMapper.orderToOrderDto(updated);
         }
         return null;
     }
 
+    /**
+     * Delete an order by its ID.
+     * - Fetches the order, deletes it, and returns the deleted order as OrderDto.
+     *
+     * @param orderId the ID of the order to delete
+     * @return the deleted OrderDto, or null if the order was not found
+     */
     @Override
     public OrderDto deleteOrder(Integer orderId) {
+        // Fetch the order by ID
         Optional<Orders> opt = orderRepo.findById(orderId);
         if (opt.isPresent()) {
             Orders entity = opt.get();
+
+            // Delete the order from the repository
             orderRepo.deleteById(orderId);
+
+            // Return the deleted order as OrderDto
             return orderMapper.orderToOrderDto(entity);
         }
         return null;
     }
 
+    /**
+     * Get all orders with pagination.
+     *
+     * @param pageable the pagination information
+     * @return a page of OrderDtos
+     */
     @Override
     public Page<OrderDto> getAllOrders(Pageable pageable) {
+        // Fetch all orders with pagination
         Page<Orders> page = orderRepo.findAll(pageable);
+
+        // Convert Orders entities to OrderDtos
         return page.map(orderMapper::orderToOrderDto);
     }
 
+    /**
+     * Search for orders based on a query string.
+     *
+     * @param query the search query
+     * @return a list of matching OrderDtos
+     */
     @Override
     public List<OrderDto> searchOrders(String query) {
+        // Fetch orders that match the search query
         List<Orders> orders = orderRepo.searchOrders(query);
+
+        // Convert the matching orders to OrderDtos
         return orders.stream()
                 .map(orderMapper::orderToOrderDto)
                 .collect(Collectors.toList());
