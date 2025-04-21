@@ -3,6 +3,10 @@ package com.wholesaleshop.demo_wholesale_shop.controller;
 import com.wholesaleshop.demo_wholesale_shop.dto.OrderDetailsDto;
 import com.wholesaleshop.demo_wholesale_shop.service.OrderDetailsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderDetailsController {
 
+    @Autowired
     OrderDetailsService orderDetailsService;
 
     @PostMapping
@@ -22,13 +27,13 @@ public class OrderDetailsController {
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderDetailsDto>> getAllOrderDetails() {
-        return ResponseEntity.ok(orderDetailsService.getAllOrderDetails());
-    }
+    public ResponseEntity<Page<OrderDetailsDto>> getAllOrderDetails(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
 
-    @GetMapping("/{id}")
-    public ResponseEntity<OrderDetailsDto> getOrderDetailsById(@PathVariable Integer id) {
-        return ResponseEntity.ok(orderDetailsService.getOrderDetailsById(id));
+        Pageable pageable = PageRequest.of(page, size);
+        Page<OrderDetailsDto> orderDetails = orderDetailsService.getAllOrderDetails(pageable);
+        return ResponseEntity.ok(orderDetails);
     }
 
     @PutMapping("/{id}")
@@ -40,6 +45,16 @@ public class OrderDetailsController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteOrderDetails(@PathVariable Integer id) {
         orderDetailsService.deleteOrderDetails(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<OrderDetailsDto>> searchOrderDetails(@RequestParam String query) {
+        List<OrderDetailsDto> results = orderDetailsService.searchOrderDetails(query);
+
+        if (results.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(results);
     }
 }

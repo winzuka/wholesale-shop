@@ -1,5 +1,6 @@
 package com.wholesaleshop.demo_wholesale_shop.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -7,9 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class OrderDetailsDto {
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
      private Integer orderDetailsId;
+
      private Integer quantity;
-     private Double subtotal;
+//     private Double subtotal;
      private Integer orderId;
      private Integer productId;
 
@@ -29,13 +32,13 @@ public class OrderDetailsDto {
         this.quantity = quantity;
     }
 
-    public Double getSubtotal() {
-        return subtotal;
-    }
-
-    public void setSubtotal(Double subtotal) {
-        this.subtotal = subtotal;
-    }
+//    public Double getSubtotal() {
+//        return subtotal;
+//    }
+//
+//    public void setSubtotal(Double subtotal) {
+//        this.subtotal = subtotal;
+//    }
 
     public Integer getOrderId() {
         return orderId;

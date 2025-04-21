@@ -19,7 +19,7 @@ public interface SupplierRepo extends JpaRepository<Supplier, Long> {
             "supplier_address LIKE %:query% OR " +
             "supplier_phone LIKE %:query%",
             nativeQuery = true)
-    List<Product> searchProducts(@Param("query") String query);
+    List<Supplier> searchSuppliers(@Param("query") String query);
 
     Page<Supplier> findAll(Pageable pageable);
 }

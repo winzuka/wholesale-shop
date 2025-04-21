@@ -15,5 +15,6 @@ public interface OrderMapper {
 
     // DTO to Entity Mapping: ignore customer, it's set in the service layer
     @Mapping(target = "customer", ignore = true)
+    @Mapping(source = "orderDate", target = "orderDate")
     Orders orderDtoToOrder(OrderDto orderDto);
 }

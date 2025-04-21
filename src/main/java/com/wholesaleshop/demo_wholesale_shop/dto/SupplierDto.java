@@ -15,7 +15,7 @@ public class SupplierDto {
     private String supplier_name;
     private String supplier_address;
     private String supplier_phone;
-    private Integer order_id;
+//    private Integer order_id;
 
     public Integer getSupplier_id() {
         return supplier_id;
@@ -49,11 +49,11 @@ public class SupplierDto {
         this.supplier_phone = supplier_phone;
     }
 
-    public Integer getOrder_id() {
-        return order_id;
-    }
-
-    public void setOrder_id(Integer order_id) {
-        this.order_id = order_id;
-    }
+//    public Integer getOrder_id() {
+//        return order_id;
+//    }
+//
+//    public void setOrder_id(Integer order_id) {
+//        this.order_id = order_id;
+//    }
 }

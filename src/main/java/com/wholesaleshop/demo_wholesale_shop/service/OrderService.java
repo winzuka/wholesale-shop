@@ -1,7 +1,6 @@
 package com.wholesaleshop.demo_wholesale_shop.service;
 
 import com.wholesaleshop.demo_wholesale_shop.dto.OrderDto;
-import com.wholesaleshop.demo_wholesale_shop.dto.ProductDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -13,9 +12,11 @@ public interface OrderService {
 
     OrderDto saveOrder(OrderDto orderDto);
 
-    OrderDto updateOrder(Integer orderId, OrderDto orderDto);
+    OrderDto updateOrder(OrderDto orderDto);
 
     OrderDto deleteOrder(Integer orderId);
+
+    List<OrderDto> searchOrders(String query);
 
     Page<OrderDto> getAllOrders(Pageable pageable);
 }

@@ -56,9 +56,9 @@ public class SupplierController {
         return ResponseEntity.ok(suppliers);
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<SupplierDto>> getAllSuppliersNoPagination() {
-        List<SupplierDto> suppliers = supplierService.getAllSuppliers();
+    @GetMapping("/search")
+    public ResponseEntity<List<SupplierDto>> searchSuppliers(@RequestParam String query) {
+        List<SupplierDto> suppliers = supplierService.searchSuppliers(query);
         if (suppliers.isEmpty()) {
             return ResponseEntity.noContent().build();
         }

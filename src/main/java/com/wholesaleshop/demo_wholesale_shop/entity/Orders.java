@@ -14,7 +14,10 @@ public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "orderId")
     private Integer orderId;
+
+    @Column(name = "orderDate")
     private LocalDate orderDate;
     private Double order_price;
 
@@ -22,7 +25,7 @@ public class Orders {
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
-    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderDetails> orderDetails;
 
     @OneToOne(mappedBy = "orders", cascade = CascadeType.ALL)

@@ -11,26 +11,29 @@ import java.time.LocalDate;
 public class OrderDto {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Integer order_id;
+    private Integer orderId;
 
-     private LocalDate order_date;
+     private LocalDate orderDate;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
      private Double order_price;
+
      private Integer customer_id;
 
-    public Integer getOrder_id() {
-        return order_id;
+    public Integer getOrderId() {
+        return orderId;
     }
 
-    public void setOrder_id(Integer order_id) {
-        this.order_id = order_id;
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
     }
 
-    public LocalDate getOrder_date() {
-        return order_date;
+    public LocalDate getOrderDate() {
+        return orderDate;
     }
 
-    public void setOrder_date(LocalDate order_date) {
-        this.order_date = order_date;
+    public void setOrderDate(LocalDate orderDate) {
+        this.orderDate = orderDate;
     }
 
     public Double getOrder_price() {

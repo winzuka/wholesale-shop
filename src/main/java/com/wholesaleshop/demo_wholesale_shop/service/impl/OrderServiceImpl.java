@@ -11,10 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
@@ -39,11 +43,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto updateOrder(Integer orderId,OrderDto orderDto) {
-        Optional<Orders> existingOpt = orderRepo.findById(orderDto.getOrder_id());
+    public OrderDto updateOrder(OrderDto orderDto) {
+        Optional<Orders> existingOpt = orderRepo.findById(orderDto.getOrderId());
         if (existingOpt.isPresent()) {
             Orders existing = existingOpt.get();
-            existing.setOrderDate(orderDto.getOrder_date());
+            existing.setOrderDate(orderDto.getOrderDate());
             existing.setOrder_price(orderDto.getOrder_price());
 
             // Optionally update the customer too
@@ -71,6 +75,14 @@ public class OrderServiceImpl implements OrderService {
     public Page<OrderDto> getAllOrders(Pageable pageable) {
         Page<Orders> page = orderRepo.findAll(pageable);
         return page.map(orderMapper::orderToOrderDto);
+    }
+
+    @Override
+    public List<OrderDto> searchOrders(String query) {
+        List<Orders> orders = orderRepo.searchOrders(query);
+        return orders.stream()
+                .map(orderMapper::orderToOrderDto)
+                .collect(Collectors.toList());
     }
 
 }
