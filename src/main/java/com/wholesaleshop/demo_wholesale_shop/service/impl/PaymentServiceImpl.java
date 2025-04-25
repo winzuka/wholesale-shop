@@ -4,6 +4,7 @@ import com.wholesaleshop.demo_wholesale_shop.dto.PaymentDto;
 import com.wholesaleshop.demo_wholesale_shop.entity.Invoice;
 import com.wholesaleshop.demo_wholesale_shop.entity.Orders;
 import com.wholesaleshop.demo_wholesale_shop.entity.Payment;
+import com.wholesaleshop.demo_wholesale_shop.exception.ResourceNotFoundException;
 import com.wholesaleshop.demo_wholesale_shop.repo.InvoiceRepo;
 import com.wholesaleshop.demo_wholesale_shop.repo.OrderRepo;
 import com.wholesaleshop.demo_wholesale_shop.repo.PaymentRepo;
@@ -48,13 +49,18 @@ public class PaymentServiceImpl implements PaymentService {
         // Map PaymentDto to Payment entity
         Payment payment = paymentMapper.paymentDtoToPayment(paymentDto);
 
-        // Fetch the invoice by ID and associate it with the payment
-        Optional<Invoice> invoiceOpt = invoiceRepo.findById(paymentDto.getInvoiceId());
-        invoiceOpt.ifPresent(payment::setInvoice);
+        // Fetch the invoice by ID or throw exception if not found
+        Invoice invoice = invoiceRepo.findById(paymentDto.getInvoiceId())
+                .orElseThrow(() -> new ResourceNotFoundException("Invoice not found with ID: " + paymentDto.getInvoiceId()));
 
-        // Fetch the order by ID and associate it with the payment
-        Optional<Orders> orderOpt = orderRepo.findById(paymentDto.getOrderId());
-        orderOpt.ifPresent(payment::setOrders);
+
+        // Fetch the order by ID or throw exception if not found
+        Orders order = orderRepo.findById(paymentDto.getOrderId())
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found with ID: " + paymentDto.getOrderId()));
+
+        // Set invoice and order
+        payment.setInvoice(invoice);
+        payment.setOrders(order);
 
         // Save the payment and return the saved PaymentDto
         Payment savedPayment = paymentRepo.save(payment);
@@ -71,31 +77,28 @@ public class PaymentServiceImpl implements PaymentService {
      */
     @Override
     public PaymentDto updatePayment(PaymentDto paymentDto) {
-        // Fetch the existing payment by ID
-        Optional<Payment> existingPaymentOpt = paymentRepo.findById(paymentDto.getPayment_id());
-
-        if (existingPaymentOpt.isPresent()) {
-            Payment existingPayment = existingPaymentOpt.get();
+        // Fetch the existing payment or throw exception if not found
+        Payment existingPayment = paymentRepo.findById(paymentDto.getPayment_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Payment not found with ID: " + paymentDto.getPayment_id()));
 
             // Update payment properties
             existingPayment.setPayment_method(paymentDto.getPayment_method());
             existingPayment.setPayment_date(paymentDto.getPayment_date());
             existingPayment.setPaid_amount(paymentDto.getPaid_amount());
 
-            // Fetch the invoice by ID and associate it with the payment
-            invoiceRepo.findById(paymentDto.getInvoiceId())
-                    .ifPresent(existingPayment::setInvoice);
+        // Fetch the invoice or throw if not found
+        Invoice invoice = invoiceRepo.findById(paymentDto.getInvoiceId())
+                .orElseThrow(() -> new ResourceNotFoundException("Invoice not found with ID: " + paymentDto.getInvoiceId()));
+        existingPayment.setInvoice(invoice);
 
-            // Fetch the order by ID and associate it with the payment
-            orderRepo.findById(paymentDto.getOrderId())
-                    .ifPresent(existingPayment::setOrders);
+        // Fetch the order or throw if not found
+        Orders order = orderRepo.findById(paymentDto.getOrderId())
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found with ID: " + paymentDto.getOrderId()));
+        existingPayment.setOrders(order);
 
             // Save the updated payment and return the updated PaymentDto
             Payment updatedPayment = paymentRepo.save(existingPayment);
             return paymentMapper.paymentToPaymentDto(updatedPayment);
-        }
-
-        return null;
     }
 
     /**
@@ -107,18 +110,15 @@ public class PaymentServiceImpl implements PaymentService {
      */
     @Override
     public PaymentDto deletePayment(Integer paymentId) {
-        // Fetch the payment by ID
-        Optional<Payment> paymentOpt = paymentRepo.findById(paymentId);
+        // Fetch the payment by ID or throw exception if not found
+        Payment payment = paymentRepo.findById(paymentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Payment not found with ID: " + paymentId));
 
-        if (paymentOpt.isPresent()) {
             // Delete the payment from the repository
             paymentRepo.deleteById(paymentId);
 
             // Return the deleted payment as PaymentDto
-            return paymentMapper.paymentToPaymentDto(paymentOpt.get());
-        }
-
-        return null;
+            return paymentMapper.paymentToPaymentDto(payment);
     }
 
     /**

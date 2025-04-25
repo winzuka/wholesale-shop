@@ -3,6 +3,7 @@ package com.wholesaleshop.demo_wholesale_shop.service.impl;
 import com.wholesaleshop.demo_wholesale_shop.dto.ProductDto;
 import com.wholesaleshop.demo_wholesale_shop.entity.Product;
 import com.wholesaleshop.demo_wholesale_shop.entity.Supplier;
+import com.wholesaleshop.demo_wholesale_shop.exception.ResourceNotFoundException;
 import com.wholesaleshop.demo_wholesale_shop.repo.ProductRepo;
 import com.wholesaleshop.demo_wholesale_shop.repo.SupplierRepo;
 import com.wholesaleshop.demo_wholesale_shop.service.ProductService;
@@ -44,7 +45,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto saveProduct(ProductDto productDto) {
         // Fetch the supplier by ID and associate it with the product
         Supplier supplier = supplierRepo.findById(Long.valueOf(productDto.getSupplier_id()))
-                .orElseThrow(() -> new RuntimeException("Supplier not found with id " + productDto.getSupplier_id()));
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found with id " + productDto.getSupplier_id()));
 
         // Map ProductDto to Product entity
         Product product = productMapper.productDtoToProduct(productDto);
@@ -68,13 +69,11 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public ProductDto updateProduct(ProductDto productDto) {
-        // Fetch the existing product by ID
-        Optional<Product> existingProductOpt = productRepo.findById(productDto.getProduct_id());
+        // Fetch the existing product by ID or throw exception if not found
+        Product existingProduct = productRepo.findById(productDto.getProduct_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + productDto.getProduct_id()));
 
-        if (existingProductOpt.isPresent()) {
-            Product existingProduct = existingProductOpt.get();
-
-            // Update product properties
+        // Update product properties
             existingProduct.setProduct_name(productDto.getProduct_name());
             existingProduct.setProduct_price(productDto.getProduct_price());
             existingProduct.setStock_quantity(productDto.getStock_quantity());
@@ -82,9 +81,6 @@ public class ProductServiceImpl implements ProductService {
             // Save the updated product and return the updated ProductDto
             Product updatedProduct = productRepo.save(existingProduct);
             return productMapper.productToProductDto(updatedProduct);
-        }
-
-        return null;
     }
 
     /**
@@ -96,18 +92,15 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public ProductDto deleteProduct(Integer productId) {
-        // Fetch the product by ID
-        Optional<Product> productOpt = productRepo.findById(productId);
+        // Fetch the product by ID or throw an exception if not found
+        Product product = productRepo.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + productId));
 
-        if (productOpt.isPresent()) {
             // Delete the product from the repository
             productRepo.deleteById(productId);
 
             // Return the deleted product as ProductDto
-            return productMapper.productToProductDto(productOpt.get());
-        }
-
-        return null;
+            return productMapper.productToProductDto(product);
     }
 
     /**

@@ -64,11 +64,7 @@ public class InvoiceController {
         invoiceDto.setInvoice_id(id);
         InvoiceDto updatedInvoice = invoiceService.updateInvoice(invoiceDto);
 
-        if (updatedInvoice == null) {
-            return ResponseEntity.notFound().build();
-        } else {
             return ResponseEntity.ok(updatedInvoice);
-        }
     }
 
     /**
@@ -81,11 +77,7 @@ public class InvoiceController {
     public ResponseEntity<InvoiceDto> deleteInvoice(@PathVariable Integer id) {
         InvoiceDto deletedInvoice = invoiceService.deleteInvoice(id);
 
-        if (deletedInvoice == null) {
-            return ResponseEntity.notFound().build();
-        } else {
             return ResponseEntity.ok(deletedInvoice);
-        }
     }
 
     /**

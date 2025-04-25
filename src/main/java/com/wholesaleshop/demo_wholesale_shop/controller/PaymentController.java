@@ -46,11 +46,7 @@ public class PaymentController {
         paymentDto.setPayment_id(id);
         PaymentDto updatedPayment = paymentService.updatePayment(paymentDto);
 
-        if (updatedPayment == null) {
-            return ResponseEntity.notFound().build();
-        } else {
             return ResponseEntity.ok(updatedPayment);
-        }
     }
 
     /**
@@ -63,11 +59,7 @@ public class PaymentController {
     public ResponseEntity<PaymentDto> deletePayment(@PathVariable Integer id) {
         PaymentDto deletedPayment = paymentService.deletePayment(id);
 
-        if (deletedPayment == null) {
-            return ResponseEntity.notFound().build();
-        } else {
             return ResponseEntity.ok(deletedPayment);
-        }
     }
 
     /**

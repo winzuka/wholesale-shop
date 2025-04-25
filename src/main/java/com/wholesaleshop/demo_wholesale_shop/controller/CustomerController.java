@@ -2,6 +2,7 @@ package com.wholesaleshop.demo_wholesale_shop.controller;
 
 import com.wholesaleshop.demo_wholesale_shop.dto.CustomerDto;
 import com.wholesaleshop.demo_wholesale_shop.service.CustomerService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -48,11 +49,7 @@ public class CustomerController {
         customerDto.setCustomer_id(id);
         CustomerDto updatedCustomer = customerService.updateCustomer(customerDto);
 
-        if(updatedCustomer == null) {
-            return ResponseEntity.notFound().build();
-        }else{
             return ResponseEntity.ok(updatedCustomer);
-        }
     }
 
     /**
@@ -65,11 +62,7 @@ public class CustomerController {
     public ResponseEntity<CustomerDto> deleteCustomer(@PathVariable Integer id) {
         CustomerDto deletedCustomer = customerService.deleteCustomer(id);
 
-        if(deletedCustomer == null) {
-            return ResponseEntity.notFound().build();
-        }else{
             return ResponseEntity.ok(deletedCustomer);
-        }
     }
 
     /**
@@ -95,7 +88,7 @@ public class CustomerController {
      * @return List of matching customers or 204 No Content if none found.
      */
     @GetMapping("/search")
-    public ResponseEntity<List<CustomerDto>> searchCustomers(@RequestParam String query) {
+    public ResponseEntity<List<CustomerDto>> searchCustomers(@Valid @RequestParam String query) {
         List<CustomerDto> customers = customerService.searchCustomers(query);
 
         if (customers.isEmpty()) {

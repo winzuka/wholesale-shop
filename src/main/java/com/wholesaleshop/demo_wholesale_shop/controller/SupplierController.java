@@ -46,11 +46,7 @@ public class SupplierController {
         supplierDto.setSupplier_id(id);
         SupplierDto updatedSupplier = supplierService.updateSupplier(id, supplierDto);
 
-        if (updatedSupplier == null) {
-            return ResponseEntity.notFound().build();
-        } else {
             return ResponseEntity.ok(updatedSupplier);
-        }
     }
 
     /**
@@ -63,11 +59,7 @@ public class SupplierController {
     public ResponseEntity<SupplierDto> deleteSupplier(@PathVariable Integer id) {
         SupplierDto deletedSupplier = supplierService.deleteSupplier(id);
 
-        if (deletedSupplier == null) {
-            return ResponseEntity.notFound().build();
-        } else {
             return ResponseEntity.ok(deletedSupplier);
-        }
     }
 
     /**

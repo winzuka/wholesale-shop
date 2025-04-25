@@ -3,6 +3,7 @@ package com.wholesaleshop.demo_wholesale_shop.service.impl;
 import com.wholesaleshop.demo_wholesale_shop.dto.OrderDto;
 import com.wholesaleshop.demo_wholesale_shop.entity.Customer;
 import com.wholesaleshop.demo_wholesale_shop.entity.Orders;
+import com.wholesaleshop.demo_wholesale_shop.exception.ResourceNotFoundException;
 import com.wholesaleshop.demo_wholesale_shop.repo.CustomerRepo;
 import com.wholesaleshop.demo_wholesale_shop.repo.OrderRepo;
 import com.wholesaleshop.demo_wholesale_shop.service.OrderService;
@@ -63,23 +64,21 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto updateOrder(OrderDto orderDto) {
         // Fetch the existing order by ID
-        Optional<Orders> existingOpt = orderRepo.findById(orderDto.getOrderId());
-        if (existingOpt.isPresent()) {
-            Orders existing = existingOpt.get();
+        Orders existingOrder = orderRepo.findById(orderDto.getOrderId())
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found with ID: " + orderDto.getOrderId()));
+
 
             // Update order properties
-            existing.setOrderDate(orderDto.getOrderDate());
-            existing.setOrder_price(orderDto.getOrder_price());
+        existingOrder.setOrderDate(orderDto.getOrderDate());
+        existingOrder.setOrder_price(orderDto.getOrder_price());
 
             // Fetch the customer by ID and associate with the order
-            Optional<Customer> customerOpt = customerRepo.findById(orderDto.getCustomer_id());
-            customerOpt.ifPresent(existing::setCustomer);
+            Customer existingCustomer = customerRepo.findById(orderDto.getCustomer_id())
+                    .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + orderDto.getCustomer_id()));
 
             // Save the updated order and return the updated OrderDto
-            Orders updated = orderRepo.save(existing);
+            Orders updated = orderRepo.save(existingOrder);
             return orderMapper.orderToOrderDto(updated);
-        }
-        return null;
     }
 
     /**
@@ -92,17 +91,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto deleteOrder(Integer orderId) {
         // Fetch the order by ID
-        Optional<Orders> opt = orderRepo.findById(orderId);
-        if (opt.isPresent()) {
-            Orders entity = opt.get();
+        Orders existingOrder = orderRepo.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found with ID: " + orderId));
 
             // Delete the order from the repository
             orderRepo.deleteById(orderId);
 
             // Return the deleted order as OrderDto
-            return orderMapper.orderToOrderDto(entity);
-        }
-        return null;
+            return orderMapper.orderToOrderDto(existingOrder);
     }
 
     /**

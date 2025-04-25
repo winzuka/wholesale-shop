@@ -3,6 +3,7 @@ package com.wholesaleshop.demo_wholesale_shop.service.impl;
 import com.wholesaleshop.demo_wholesale_shop.dto.InvoiceDto;
 import com.wholesaleshop.demo_wholesale_shop.entity.Invoice;
 import com.wholesaleshop.demo_wholesale_shop.entity.Orders;
+import com.wholesaleshop.demo_wholesale_shop.exception.ResourceNotFoundException;
 import com.wholesaleshop.demo_wholesale_shop.repo.InvoiceRepo;
 import com.wholesaleshop.demo_wholesale_shop.repo.OrderRepo;
 import com.wholesaleshop.demo_wholesale_shop.service.InvoiceService;
@@ -36,10 +37,8 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public InvoiceDto saveInvoice(InvoiceDto invoiceDto) {
         // Fetch the order by its ID to associate it with the invoice.
-        Optional<Orders> orderOpt = orderRepo.findById(invoiceDto.getOrderId());
-
-        if (orderOpt.isPresent()) {
-            Orders order = orderOpt.get();
+        Orders order = orderRepo.findById(invoiceDto.getOrderId())
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found with ID: " + invoiceDto.getOrderId()));
 
             // Create a new Invoice entity and set the properties.
             Invoice invoice = new Invoice();
@@ -52,9 +51,6 @@ public class InvoiceServiceImpl implements InvoiceService {
 
             // Convert the saved invoice entity to DTO and return.
             return invoiceMapper.invoiceToInvoiceDto(savedInvoice);
-        }
-
-        throw new RuntimeException("Order not found with ID: " + invoiceDto.getOrderId());
     }
 
     /**
@@ -64,30 +60,25 @@ public class InvoiceServiceImpl implements InvoiceService {
      */
     @Override
     public InvoiceDto updateInvoice(InvoiceDto invoiceDto) {
-        // Fetch the existing invoice by its ID.
-        Optional<Invoice> invoiceOpt = invoiceRepo.findById(invoiceDto.getInvoice_id());
-
-        if (invoiceOpt.isPresent()) {
-            Invoice existingInvoice = invoiceOpt.get();
+        // Check if the invoice exists
+        Invoice existingInvoice = invoiceRepo.findById(invoiceDto.getInvoice_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Invoice not found with ID: " + invoiceDto.getInvoice_id()));
 
             // Update the invoice details.
             existingInvoice.setInvoice_date(invoiceDto.getInvoice_date());
 
-            // Fetch the associated order and update the invoice's order and amount.
-            Optional<Orders> orderOpt = orderRepo.findById(invoiceDto.getOrderId());
-            orderOpt.ifPresent(order -> {
+        // Check if the order exists
+        Orders order = orderRepo.findById(invoiceDto.getOrderId())
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found with ID: " + invoiceDto.getOrderId()));
+
                 existingInvoice.setOrders(order);
                 existingInvoice.setInvoice_amount(order.getOrder_price());
-            });
 
             // Save the updated invoice.
             Invoice updatedInvoice = invoiceRepo.save(existingInvoice);
 
             // Convert the updated invoice entity to DTO and return.
             return invoiceMapper.invoiceToInvoiceDto(updatedInvoice);
-        }
-
-        return null;
     }
 
     /**
@@ -97,18 +88,15 @@ public class InvoiceServiceImpl implements InvoiceService {
      */
     @Override
     public InvoiceDto deleteInvoice(Integer invoiceId) {
-        // Fetch the invoice by its ID to check if it exists.
-        Optional<Invoice> invoiceOpt = invoiceRepo.findById(invoiceId);
+        // Check if the invoice exists
+        Invoice invoice = invoiceRepo.findById(invoiceId)
+                .orElseThrow(() -> new ResourceNotFoundException("Invoice not found with ID: " + invoiceId));
 
-        if (invoiceOpt.isPresent()) {
             // Delete the invoice from the database.
             invoiceRepo.deleteById(invoiceId);
 
             // Convert the deleted invoice entity to DTO and return.
-            return invoiceMapper.invoiceToInvoiceDto(invoiceOpt.get());
-        }
-
-        return null;
+            return invoiceMapper.invoiceToInvoiceDto(invoice);
     }
 
     /**

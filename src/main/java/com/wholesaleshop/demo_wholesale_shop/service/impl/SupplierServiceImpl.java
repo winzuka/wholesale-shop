@@ -2,6 +2,7 @@ package com.wholesaleshop.demo_wholesale_shop.service.impl;
 
 import com.wholesaleshop.demo_wholesale_shop.dto.SupplierDto;
 import com.wholesaleshop.demo_wholesale_shop.entity.Supplier;
+import com.wholesaleshop.demo_wholesale_shop.exception.ResourceNotFoundException;
 import com.wholesaleshop.demo_wholesale_shop.repo.SupplierRepo;
 import com.wholesaleshop.demo_wholesale_shop.service.SupplierService;
 import com.wholesaleshop.demo_wholesale_shop.utils.SupplierMapper;
@@ -53,13 +54,11 @@ public class SupplierServiceImpl implements SupplierService {
      */
     @Override
     public SupplierDto updateSupplier(Integer id, SupplierDto supplierDto) {
-        // Fetch the existing supplier by ID
-        Optional<Supplier> existingSupplierOpt = supplierRepo.findById(Long.valueOf(id));
+        // Fetch the existing supplier by ID or throw exception if not found
+        Supplier existingSupplier = supplierRepo.findById(Long.valueOf(id))
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found with ID: " + id));
 
-        if (existingSupplierOpt.isPresent()) {
-            Supplier existingSupplier = existingSupplierOpt.get();
-
-            // Update supplier properties
+        // Update supplier properties
             existingSupplier.setSupplier_name(supplierDto.getSupplier_name());
             existingSupplier.setSupplier_phone(supplierDto.getSupplier_phone());
             existingSupplier.setSupplier_address(supplierDto.getSupplier_address());
@@ -67,9 +66,6 @@ public class SupplierServiceImpl implements SupplierService {
             // Save the updated supplier and return the updated SupplierDto
             Supplier updatedSupplier = supplierRepo.save(existingSupplier);
             return supplierMapper.supplierToSupplierDto(updatedSupplier);
-        }
-
-        return null;
     }
 
     /**
@@ -81,18 +77,15 @@ public class SupplierServiceImpl implements SupplierService {
      */
     @Override
     public SupplierDto deleteSupplier(Integer id) {
-        // Fetch the supplier by ID
-        Optional<Supplier> optionalSupplier = supplierRepo.findById(Long.valueOf(id));
+        // Fetch the supplier by ID or throw exception if not found
+        Supplier supplier = supplierRepo.findById(Long.valueOf(id))
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found with ID: " + id));
 
-        if (optionalSupplier.isPresent()) {
-            // Delete the supplier from the repository
+        // Delete the supplier from the repository
             supplierRepo.deleteById(Long.valueOf(id));
 
             // Return the deleted supplier as SupplierDto
-            return supplierMapper.supplierToSupplierDto(optionalSupplier.get());
-        }
-
-        return null;
+            return supplierMapper.supplierToSupplierDto(supplier);
     }
 
     /**

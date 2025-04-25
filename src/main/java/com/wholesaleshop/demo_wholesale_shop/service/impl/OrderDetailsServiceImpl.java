@@ -4,6 +4,7 @@ import com.wholesaleshop.demo_wholesale_shop.dto.OrderDetailsDto;
 import com.wholesaleshop.demo_wholesale_shop.entity.OrderDetails;
 import com.wholesaleshop.demo_wholesale_shop.entity.Orders;
 import com.wholesaleshop.demo_wholesale_shop.entity.Product;
+import com.wholesaleshop.demo_wholesale_shop.exception.ResourceNotFoundException;
 import com.wholesaleshop.demo_wholesale_shop.repo.OrderDetailsRepo;
 import com.wholesaleshop.demo_wholesale_shop.repo.OrderRepo;
 import com.wholesaleshop.demo_wholesale_shop.repo.ProductRepo;
@@ -47,11 +48,11 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
     public OrderDetailsDto saveOrderDetails(OrderDetailsDto dto) {
         // Fetch the order and validate its existence
         Orders orders = orderRepo.findById(dto.getOrderId())
-                .orElseThrow(() -> new RuntimeException("Order not found with id: " + dto.getOrderId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + dto.getOrderId()));
 
         // Fetch the product and validate its existence
         Product product = productRepo.findById(dto.getProductId())
-                .orElseThrow(() -> new RuntimeException("Product not found with id: " + dto.getProductId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + dto.getProductId()));
 
         // Calculate subtotal based on unit price and quantity
         double unitPrice = product.getProduct_price();
@@ -111,7 +112,7 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
     @Override
     public void deleteOrderDetails(Integer id) {
         // Fetch the existing order details
-        OrderDetails existing = orderDetailsRepo.findById(id).orElseThrow(()-> new RuntimeException("Order Detail not found with id: " + id));
+        OrderDetails existing = orderDetailsRepo.findById(id).orElseThrow(()-> new ResourceNotFoundException("Order Detail not found with id: " + id));
 
         // Get the order and product involved in this order detail
         Orders orders = existing.getOrders();
@@ -145,7 +146,7 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
     public OrderDetailsDto updateOrderDetails(Integer id, OrderDetailsDto dto) {
         // Fetch the existing order details
         OrderDetails existing = orderDetailsRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("OrderDetails not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("OrderDetails not found with id: " + id));
 
         // Update quantity and recalculate subtotal
         existing.setQuantity(dto.getQuantity());
@@ -173,13 +174,13 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
         // Update order and product relationships if changed
         if (!existing.getOrders().getOrderId().equals(dto.getOrderId())) {
             Orders orders = orderRepo.findById(dto.getOrderId())
-                    .orElseThrow(() -> new RuntimeException("Order not found with id: " + dto.getOrderId()));
+                    .orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + dto.getOrderId()));
             existing.setOrders(orders);
         }
 
         if (!existing.getProduct().getProductId().equals(dto.getProductId())) {
             Product product = productRepo.findById(dto.getProductId())
-                    .orElseThrow(() -> new RuntimeException("Product not found with id: " + dto.getProductId()));
+                    .orElseThrow(() -> new ResourceNotFoundException("Product not found with id: " + dto.getProductId()));
             existing.setProduct(product);
         }
 

@@ -46,11 +46,7 @@ public class ProductController {
         productDto.setProduct_id(id);
         ProductDto updatedProduct = productService.updateProduct(productDto);
 
-        if(updatedProduct == null) {
-            return ResponseEntity.notFound().build();
-        } else {
             return ResponseEntity.ok(updatedProduct);
-        }
     }
 
     /**
@@ -63,11 +59,7 @@ public class ProductController {
     public ResponseEntity<ProductDto> deleteProduct(@PathVariable Integer id) {
         ProductDto deletedProduct = productService.deleteProduct(id);
 
-        if(deletedProduct == null) {
-            return ResponseEntity.notFound().build();
-        } else {
             return ResponseEntity.ok(deletedProduct);
-        }
     }
 
     /**

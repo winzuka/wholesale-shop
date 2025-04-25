@@ -45,11 +45,7 @@ public class OrderController {
         orderDto.setOrderId(id);
         OrderDto updatedOrder = orderService.updateOrder(orderDto);
 
-        if (updatedOrder == null) {
-            return ResponseEntity.notFound().build();
-        } else {
             return ResponseEntity.ok(updatedOrder);
-        }
     }
 
     /**
@@ -60,6 +56,7 @@ public class OrderController {
      */
     @DeleteMapping("/{orderId}")
     public OrderDto deleteOrder(@PathVariable Integer orderId) {
+
         return orderService.deleteOrder(orderId);
     }
 

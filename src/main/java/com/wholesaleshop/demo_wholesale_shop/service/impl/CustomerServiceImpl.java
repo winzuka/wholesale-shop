@@ -2,6 +2,7 @@ package com.wholesaleshop.demo_wholesale_shop.service.impl;
 
 import com.wholesaleshop.demo_wholesale_shop.dto.CustomerDto;
 import com.wholesaleshop.demo_wholesale_shop.entity.Customer;
+import com.wholesaleshop.demo_wholesale_shop.exception.ResourceNotFoundException;
 import com.wholesaleshop.demo_wholesale_shop.repo.CustomerRepo;
 import com.wholesaleshop.demo_wholesale_shop.service.CustomerService;
 import com.wholesaleshop.demo_wholesale_shop.utils.CustomerMapper;
@@ -11,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,11 +49,10 @@ public class CustomerServiceImpl implements CustomerService {
     public CustomerDto updateCustomer(CustomerDto customerDto) {
 
         // Check if the customer exists in the database.
-        Optional<Customer> existingCustomerOpt = customerRepo.findById(customerDto.getCustomer_id());
+        Customer existingCustomer = customerRepo.findById(customerDto.getCustomer_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + customerDto.getCustomer_id()));
 
-        if (existingCustomerOpt.isPresent()) {
             // Update the customer's information.
-            Customer existingCustomer = existingCustomerOpt.get();
             existingCustomer.setCustomer_name(customerDto.getCustomer_name());
             existingCustomer.setCustomer_address(customerDto.getCustomer_address());
             existingCustomer.setCustomer_email(customerDto.getCustomer_email());
@@ -64,9 +63,6 @@ public class CustomerServiceImpl implements CustomerService {
 
             // Convert updated entity back to DTO and return it.
             return customerMapper.customerToCustomerDto(updatedCustomer);
-        }
-
-        return null;
     }
 
     /**
@@ -77,17 +73,15 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerDto deleteCustomer(Integer customerId) {
         // Find the customer by ID.
-        Optional<Customer> customerOpt = customerRepo.findById(customerId);
+        Customer customer = customerRepo.findById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found with ID: " + customerId));
 
-        if (customerOpt.isPresent()) {
             // Delete the customer from the database.
             customerRepo.deleteById(customerId);
 
             // Convert the deleted entity back to DTO and return it.
-            return customerMapper.customerToCustomerDto(customerOpt.get());
-        }
+            return customerMapper.customerToCustomerDto(customer);
 
-        return null;
     }
 
     /**
