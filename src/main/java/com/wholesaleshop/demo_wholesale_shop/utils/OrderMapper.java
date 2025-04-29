@@ -2,7 +2,6 @@ package com.wholesaleshop.demo_wholesale_shop.utils;
 
 import com.wholesaleshop.demo_wholesale_shop.dto.OrderDto;
 import com.wholesaleshop.demo_wholesale_shop.entity.Orders;
-import com.wholesaleshop.demo_wholesale_shop.entity.Orders;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
