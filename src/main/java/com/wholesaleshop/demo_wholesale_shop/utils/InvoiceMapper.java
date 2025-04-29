@@ -10,11 +10,11 @@ import org.mapstruct.MappingTarget;
 public interface InvoiceMapper {
 
     @Mapping(source = "orders.orderId", target = "orderId")
-    @Mapping(source = "payments.payment_id", target = "paymentId")
+//    @Mapping(source = "payments.payment_id", target = "paymentId")
     InvoiceDto invoiceToInvoiceDto(Invoice invoice);
 
     @Mapping(target = "orders.orderId", source = "orderId")
-    @Mapping(target = "payments.payment_id", source = "paymentId")
+//    @Mapping(target = "payments.payment_id", source = "paymentId")
     Invoice invoiceDtoToInvoice(InvoiceDto invoiceDto);
 
     @Mapping(target = "invoice_id", ignore = true)

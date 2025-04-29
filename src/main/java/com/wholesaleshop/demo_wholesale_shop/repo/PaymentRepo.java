@@ -1,5 +1,6 @@
 package com.wholesaleshop.demo_wholesale_shop.repo;
 
+import com.wholesaleshop.demo_wholesale_shop.entity.Orders;
 import com.wholesaleshop.demo_wholesale_shop.entity.Payment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PaymentRepo extends JpaRepository<Payment, Integer> {
 
@@ -19,4 +21,6 @@ public interface PaymentRepo extends JpaRepository<Payment, Integer> {
     List<Payment> searchPayments(@Param("query") String query);
 
     Page<Payment> findAll(Pageable pageable);
+
+    Optional<Payment> findByOrders(Orders Orders);
 }

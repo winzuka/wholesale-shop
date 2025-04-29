@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,6 +20,9 @@ public class OrderDto {
      private Double order_price;
 
      private Integer customer_id;
+     private List<OrderDetailsDto> orderDetails;
+     private InvoiceDto invoice;
+     private PaymentDto payment;
 
     public Integer getOrderId() {
         return orderId;
@@ -50,5 +54,29 @@ public class OrderDto {
 
     public void setCustomer_id(Integer customer_id) {
         this.customer_id = customer_id;
+    }
+
+    public List<OrderDetailsDto> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(List<OrderDetailsDto> orderDetails) {
+        this.orderDetails = orderDetails;
+    }
+
+    public InvoiceDto getInvoice() {
+        return invoice;
+    }
+
+    public void setInvoice(InvoiceDto invoice) {
+        this.invoice = invoice;
+    }
+
+    public PaymentDto getPayment() {
+        return payment;
+    }
+
+    public void setPayment(PaymentDto payment) {
+        this.payment = payment;
     }
 }

@@ -14,10 +14,8 @@ public class InvoiceDto {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Double invoice_amount;
 
-    private Integer orderId;
-
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Integer paymentId;
+    private Integer orderId;
 
     public Integer getInvoice_id() {
         return invoice_id;
@@ -49,13 +47,5 @@ public class InvoiceDto {
 
     public void setOrderId(Integer orderId) {
         this.orderId = orderId;
-    }
-
-    public Integer getPaymentId() {
-        return paymentId;
-    }
-
-    public void setPaymentId(Integer paymentId) {
-        this.paymentId = paymentId;
     }
 }

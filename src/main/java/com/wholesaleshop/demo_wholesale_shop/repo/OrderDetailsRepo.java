@@ -12,11 +12,12 @@ import java.util.List;
 
 public interface OrderDetailsRepo extends JpaRepository<OrderDetails, Integer> {
 
-    @Query(value = "SELECT * FROM order_details WHERE " +
+    @Query(value = "SELECT * FROM orderdetails WHERE " +
             "orderDetailsId LIKE %:query%",
             nativeQuery = true)
     List<OrderDetails> searchOrderDetails(@Param("query") String query);
-    List<OrderDetails> findByOrders(Orders orders);
 
     Page<OrderDetails> findAll(Pageable pageable);
+
+    List<OrderDetails> findByOrders(Orders Orders);
 }

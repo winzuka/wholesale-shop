@@ -14,6 +14,7 @@ public class OrderDetails {
     private Integer orderDetailsId;
     private Integer quantity;
     private Double subtotal;
+    private Double unitPrice;
 
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
@@ -61,5 +62,13 @@ public class OrderDetails {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public Double getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(Double unitPrice) {
+        this.unitPrice = unitPrice;
     }
 }

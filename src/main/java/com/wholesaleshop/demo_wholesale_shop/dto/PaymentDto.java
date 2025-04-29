@@ -12,7 +12,9 @@ public class PaymentDto {
     private String payment_method;
     private LocalDate payment_date;
     private Double paid_amount;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer orderId;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer invoiceId;
 
     public Integer getPayment_id() {
